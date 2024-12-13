@@ -1,0 +1,13 @@
+class Solution:
+    def isAnagram(self, s: str, t: str) -> bool:
+        #check length of strings
+        if len(s) != len(t) : 
+            return False
+
+        #sort() function usually used in list and returns nothing.whereas sorted() works on strings,tuples and return new sorted iterable untouching original one.
+        
+        word = ''.join(sorted(s))
+        word1 = ''.join(sorted(t))
+    
+
+        return word == word1
