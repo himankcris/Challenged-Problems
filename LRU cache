@@ -1,0 +1,69 @@
+class Node :
+#creating DLL such that it contains prev and next.
+    def __init__(self,key,value) :
+        self.key = key
+        self.value = value
+        self.prev = None
+        self.next = None
+
+
+class LRUCache:
+
+    def __init__(self, capacity: int):
+        self.cache = {} 
+        self.capacity = capacity   
+#creating dummy nodes for left and right
+        self.left = Node(0,0)
+        self.right = Node(0,0)
+#linking both nodes in DLL
+        self.left.next = self.right
+        self.right.prev = self.left
+                
+    
+    def remove(self,Node) ;
+#deleting Node to insert in front
+        prev = Node.prev
+        next = Node.next
+        prev.next = next
+        next.prev = prev
+
+    def insert(self,Node) :
+#Inserting Node  in front
+        prev = self.right.prev
+        next = self.right
+        prev.next = Node
+        next.prev = Node
+        Node.next = next
+        Node.prev = prev
+        
+    def get(self, key: int) -> int:
+        #left = lru & right = most recent
+        if key in self.cache :
+            #Checking the key in cache hashmap 
+            self.remove(self.cache[key])
+            self.insert(self.cache[key])
+            return self.cache[key].value
+        return -1
+
+        
+
+    def put(self, key: int, value: int) -> None:
+        #for duplicate value we are updating with new one if it exists and then inserting it in list.
+        if key in self.cache :
+            self.remove(self.cache[key])
+        self.cache[key] = Node(key,value)
+        self.insert(self.cache[key])
+
+        if len(self.cache) > self.capacity :
+            #remove from list and delete lru from hashmap
+            lru = self.left.next 
+            self.remove(lru)
+            del self.cache[lru.key]
+            
+        
+
+
+# Your LRUCache object will be instantiated and called as such:
+# obj = LRUCache(capacity)
+# param_1 = obj.get(key)
+# obj.put(key,value)
